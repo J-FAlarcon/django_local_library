@@ -29,8 +29,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&
 
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['murmuring-reaches-04720.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -80,15 +79,24 @@ WSGI_APPLICATION = 'locallibrary.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
-db_from_env = dj_database_url.config(default='postgres://alumnodb:alumnodb@localhost:5432/psi', conn_max_age=500) 
-DATABASES['default'].update(db_from_env)
+DATABASES = {}
+if os.getenv(’SQLITE’, False):
+    DATABASES[’default’] = {
+        ’ENGINE’: ’django.db.backends.sqlite3’, ’NAME’: os.path.join(BASE_DIR, ’db.sqlite3’),
+    }
+else:
+    import dj_database_url DATABASES[’default’] =
+    dj_database_url.config(default=’postgres://alumnodb:alumnodb@localhost:5432/psi’, conn_max_age=500)
+
+    db_from_env = dj_database_url.config(default='postgres://alumnodb:alumnodb@localhost:5432/psi', conn_max_age=500) 
+    DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
